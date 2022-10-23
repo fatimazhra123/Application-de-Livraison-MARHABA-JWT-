@@ -1,31 +1,25 @@
-
-
-
 const express = require("express")
 const app = express()
 const cennection =require('./config/db');
 const router = require("./routes/Auth")
-const  dotenv = require('dotenv');
+const  dotenv = require('dotenv').config();;
 const model = require("./model/user")
-// const authnetificate= require('./middleware/authentificate')
+const cookie=require('cookie-parser')
 
-dotenv.config();
+
+
 
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-
+app.use(cookie())
 
 const PORT = process.env.PORT|| 6000
 
 //routes meddleware
 app.use('/api/auth',router)
 
-const verifyUser = (code) => {
-    return axios.get(API_URL + "confirm/" + code).then((response) => {
-      return response.data;
-    });
-  };
+
 
 
 app.listen(PORT, (err)=> {

@@ -1,43 +1,39 @@
 const mongoose=require('mongoose')
 
-const Userschema= new mongoose.Schema({
+const UserSchema= new mongoose.Schema({
     name:{
         type:String,
+        required:true
         
     },
     email:{
         type:String,
+        required:true,
+        
       
-    },
-    role:{
-        type:String,
-       
     },
     password:{
         type:String,
+        required:true,
        
     },
-
-  PhoneNumber:{
-    type:Number,
+    emailToken:{
+        type:String,
    
+    },
+isVerified:{
+    type: Boolean,
+    default:false
 },
-adresse:{
-    type:String,
-    
-},
-Verified:{
-    type:Boolean,
-    default:false,
-},
-activationCode: { 
-    type: String, 
-    unique: true }
+
+date: { 
+    type: Date, 
+    default: Date.now() },
 
 })
 
 
 
- const User= mongoose.model('user',Userschema)
+ const User= mongoose.model('User',UserSchema)
 
-module.exports= User
+    module.exports= User
