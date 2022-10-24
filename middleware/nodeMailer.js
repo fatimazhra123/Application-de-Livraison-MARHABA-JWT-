@@ -12,6 +12,7 @@ require('dotenv');
   });
 
   const sendConfirmationEmail = (req,user,res)=>{
+    console.log("Check");
     const mailOptions = {
       from: "verify your email" + process.env.Auth_EMAIL,
       to : user.email,

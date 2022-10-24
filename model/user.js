@@ -25,10 +25,15 @@ isVerified:{
     type: Boolean,
     default:false
 },
-
 date: { 
     type: Date, 
-    default: Date.now() },
+    default: Date.now() 
+},
+    role: 
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "role"
+        },
 
 })
 

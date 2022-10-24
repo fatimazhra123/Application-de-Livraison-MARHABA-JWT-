@@ -1,4 +1,3 @@
-
 const express=require('express')
 const cookie=require('cookie-parser')
 //mongodb user model
@@ -14,14 +13,18 @@ const {mongoose } = require('mongoose')
 const { findOne } = require('../model/user')
 require('dotenv');
 const console = require('console')
+const role = require('../model/role')
 // const jt=require('../config/jwt')
 const {sendConfirmationEmail} = require('../middleware/nodeMailer')
 
 //Signup
+// method : post
+// url : api/auth/Register
+
 
 const Register = async(req,res)=>{
 
-  const {name,email,password}=req.body
+  const {name,email,password,role}=req.body
 
   if(!name || !email || !password){
     console.log("all filed is required")
@@ -43,6 +46,7 @@ const Register = async(req,res)=>{
       email,
       password : hashePassword,
       emailToken:crypto.randomBytes(64).toString('hex'),
+      role:req.body.role,
       isVerified:false
   })
 
@@ -64,6 +68,46 @@ const Register = async(req,res)=>{
 
 }
 
+
+
+const createToken=(id)=>{
+  return jwt.sign({ id},process.env.JWT_SECRET)
+}
+
+
+//loginn:
+
+// method : post
+// url : api/auth/login
+
+const Login = async(req,res) => {
+  const{email,password,}=req.body
+
+  if(!email || !password){
+    console.log("all field is required")
+  }
+
+  const findUser= await User.findOne({email})
+
+  if(findUser && (await bcrypt.compare(password,findUser.password)) &&  findUser.isVerified === true){
+    
+    //create token
+    const token=  createToken(findUser.id)
+    // res.status(201).json({token});
+    console.log(token)
+    //store token in cookie
+    res.cookie('access-token',token)
+    res.status(200).send("Login is sucesssusfully!!!!") ;
+  }
+  else{
+    console.log("is not verfied")
+  }
+
+}
+
+
+
+//confirmation email:
 
 const verifyUser=async(req,res)=>{
 
@@ -95,38 +139,8 @@ const verifyUser=async(req,res)=>{
 
   
 
-
-
-const createToken=(id)=>{
-  return jwt.sign({ id},process.env.JWT_SECRET)
-}
-//loginn:
-
-const Login = async(req,res) => {
-  const{email,password,}=req.body
-
-  if(!email || !password){
-    console.log("all field is required")
-  }
-
-  const findUser= await User.findOne({email})
-
-  if(findUser && (await bcrypt.compare(password,findUser.password)) &&  findUser.isVerified === true){
-    
-    //create token
-    const token=  createToken(findUser.id)
-    // res.status(201).json({token});
-    console.log(token)
-    //store token in cookie
-    res.cookie('access-token',token)
-    res.status(200).send("Login is sucesssusfully!!!!") ;
-  }
-  else{
-    console.log("invalid data or is email is not verfied")
-  }
-
-}
-
+// method : post
+// url : api/auth/forgetpassword
 const ForgetPassword= async(req,res)=>{
   const {email} = req.body;
   try{
@@ -143,7 +157,6 @@ const ForgetPassword= async(req,res)=>{
   });
   const link =`http://localhost:3000/api/auth/resetpassword/${token}`;
   console.log(link)
-  let nodemailer = require('nodemailer');
 
 let transporter = nodemailer.createTransport({
 service: 'gmail',
@@ -173,7 +186,7 @@ console.log(link);
 }
   
 }
-
+// method : post
 
 const Resetpassword= async(req,res)=>{
   let token = req.params.token
