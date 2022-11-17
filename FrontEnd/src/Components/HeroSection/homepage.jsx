@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../index.css'
-import {Link} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 
 
 
@@ -14,7 +14,7 @@ function homepage() {
       <h3 className='px-10 User'>MARHABA RESTAURANT</h3>
     </Link>
     <div className="flex md:order-2">
-      <Link to="" type="button" className="text-white bg-violet-700 hover:bg-#48ea98-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  py-2.5 text-center mr-3  px-10 md:mr-0 started">Home</Link>
+      {/* <Link to="" type="button" className="text-white bg-violet-700 hover:bg-#48ea98-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  py-2.5 text-center mr-3  px-10 md:mr-0 started">Home</Link> */}
       <button data-collapse-toggle="navbar-sticky" type="button" className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
         <span className="sr-only">Open main menu</span>
         <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg>
@@ -22,12 +22,13 @@ function homepage() {
     </div>
     <div className="hidden justify-between items-center w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
       <ul className="flex flex-col p-4 mt-4 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0  ">
-        <li>
-          
-        </li>
-        <li>
-          
-        </li>
+      
+   <li className='mx-3 list-unstyled text-white'><NavLink  to="client">Client</NavLink></li>
+   <li className='mx-3 list-unstyled text-white'><NavLink to="manager">Manager</NavLink></li>
+    <li className='mx-3 list-unstyled text-white'><NavLink to="livreur">Livreur</NavLink></li>
+     <li className='mx-3 list-unstyled text-white'><NavLink  to="login">Login</NavLink></li>
+      <li className='mx-3 list-unstyled text-white'><NavLink  to="register">Register</NavLink></li>
+
       </ul>
     </div>
   </div>

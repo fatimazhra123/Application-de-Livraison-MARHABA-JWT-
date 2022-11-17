@@ -1,12 +1,13 @@
 import {useState} from 'react';
-import { useNavigate} from 'react-router-dom';
 import '../index.css'
 import axios from 'axios';
 import { showMessage } from './utiles/showMessage';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 const Forgotpassword = () => {
-  const navigate = useNavigate();
     const [email, setEmail] = useState("")
     const [message, setMessage] = useState("")
     const [isError, setError] = useState(false)
@@ -15,7 +16,7 @@ const Forgotpassword = () => {
         return setEmail(e.target.value)
       }
 
-    const API_URL = `http://localhost:3001/api/auth/forgetpassword`;
+    const API_URL = `http://localhost:8000/api/auth/forgetpassword`;
 
     const submitHandler = async () => {
         const user = {
@@ -24,9 +25,9 @@ const Forgotpassword = () => {
         try {
            const result = await axios.post(API_URL ,user)
            setMessage(result.data.message)
-            setTimeout(() => {
-                navigate('/Resetpassword')
-            }, 3000);
+           toast.info(result.data.message, {
+            position: "top-center",
+        });
           } catch (error) {
             setMessage(error.response)
             setError(true)

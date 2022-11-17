@@ -1,10 +1,11 @@
 import {useState} from 'react';
 import '../index.css'
-import { Link , useNavigate } from 'react-router-dom'
+import { Link , useNavigate,useLocation } from 'react-router-dom'
 import axios from 'axios';
-import { showMessage } from './utiles/showMessage';
+// import { showMessage } from './utiles/showMessage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
@@ -13,8 +14,11 @@ const  Login = () =>  {
     const navigate = useNavigate();
     const [email , setEmail] = useState("")
     const [password , setPassword] = useState("")
-    const [Message, setMessage] = useState("")
-    const [Error , setError] = useState(false);
+    // const [Message, setMessage] = useState("")
+    // const [Error , setError] = useState(false);
+
+    const location = useLocation();
+    const from =  location.state?.from || '/';
    
     const handleEmail = (e)=>{
         return setEmail(e.target.value)
@@ -23,7 +27,7 @@ const  Login = () =>  {
         return setPassword(e.target.value)
       }
 
-      const API_URL = "http://localhost:3001/api/auth/Login"
+      const API_URL = "http://localhost:8000/api/auth/login"
       const loginHandler = async () => {
         const user = {
             email,
@@ -49,16 +53,19 @@ const  Login = () =>  {
       }
         try {
           const result = await axios.post(API_URL , user)
-          console.log(result.data)
-            // const token = result.data.token
+          console.log(result)
+        
+            const role = result.data.role.role
+            console.log(role); 
             // const Username = result.data.user.name
-            // localStorage.setItem("token", token)
+            localStorage.setItem("role", role)
             // localStorage.setItem("User", Username)
-            setError(false)
-            navigate('/dashboard')
+            // setError(false)
+            navigate(from, {replace : true})
+            console.log(from);
           } catch (error) {
-            setMessage(error.response.data.message)
-            setError(true)
+            // setMessage(error.response.data.message)
+            // setError(true)
           }
       }
     return (
@@ -75,14 +82,14 @@ const  Login = () =>  {
         className='text-xs font-medium 'style={{color:"#48ea98"}}>Welcome Back please enter your details
         </p>
         
-        {Message && showMessage( Error ,  Message)}
+        {/* {Message && showMessage( Error ,  Message)} */}
 
         <div 
         className='mt-4 '>
         <div>
  
         <label 
-        for='email'
+       
         className='text-xs font-medium'>Email
         </label>
         <input 
@@ -96,7 +103,7 @@ const  Login = () =>  {
         className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-3 my-1 text-gray-90placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" placeholder="EnteYour email address" />
 
         <label 
-        for="password" 
+        
         className='text-xs font-medium'>password
         </label>
         <input 
@@ -120,7 +127,7 @@ const  Login = () =>  {
         <div 
         className='flex  flex-col   align-items-center justify-content-center'>
         <Link  
-        to="Forgetpassword" 
+        to="/forgetpassword" 
         className=' text-center mb-4 text-xs font-medium 'style={{color:"#48ea98"}}>forgot password? 
         </Link>
         </div>

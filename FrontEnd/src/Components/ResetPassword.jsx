@@ -10,27 +10,32 @@ const  ResetPassword = () =>  {
     const navigate = useNavigate();
     const {token} = useParams();
     const [password , setPassword] = useState("");
+    const [password2 , setPassword2] = useState("");
     const [message , setMessage] = useState("");
     const [isError , setIsError] = useState(false)
 
-    const handleEmail = (e) => {
+    const handlePass = (e) => {
         return setPassword(e.target.value)
     }
+    const handlePass2 = (e) => {
+        return setPassword2(e.target.value)
+    }
 
-    const API_URL = `http://localhost:3001/api/auth/resetpassword/${token}`
+    const API_URL = `http://localhost:8000/api/auth/resetpassword/${token}`
 console.log(token)
     const resetpassword = async () => {
 
      const 
      user= {
         password,
+        password2
      }  
      try {
         const result = await axios.post(API_URL, user)
         setMessage(result.data.message)
-        console.log(result.data)
+        console.log(result.data.message)
         setIsError(false)
-        setTimeout(() => { navigate('/login') }, 2000);
+        navigate('/login')
      } catch (error) {
         console.log(error)
         setIsError(true)
@@ -64,7 +69,7 @@ console.log(token)
         name="Password" 
         type="Password" 
         value={password}
-        onChange={handleEmail}
+        onChange={handlePass}
         autocomplete="Password" 
         required 
         class=" w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-6  my-1 text-gray-90placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" placeholder="Enter Your new Password " />
@@ -77,7 +82,9 @@ console.log(token)
         <input 
         id="Password" 
         name="Password" 
-        type="Password" 
+        type="Password"
+        value={password2}
+        onChange={handlePass2} 
         autocomplete="Password" 
         required 
         class=" w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-6 py-2 my-1 text-gray-90placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" placeholder="confirm Password " />
@@ -89,7 +96,7 @@ console.log(token)
         <div 
         className='mt-8 flex flex-col gap-y-4'>
         <button
-        className='text-sm active:scale-[.98]  active:duration-75 transition-all hover:scale-[1.01] ease-in-out py-3  text-white  font-bold rounded-xl' 
+        className='text-sm active:scale-[.98]  active:duration-75 transition-all hover:scale-[1.01] ease-in-out py-2  text-white  font-bold rounded-xl' 
         onClick={resetpassword}  style={{ background:"#48ea98"}}>Reset password 
         </button>
         </div>

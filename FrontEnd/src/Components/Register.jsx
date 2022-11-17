@@ -2,8 +2,8 @@ import  {useState} from 'react';
 import '../index.css'
 import { Link,useNavigate   } from 'react-router-dom'
 import axios from 'axios';
-import { showMessage } from './utiles/showMessage';
-import { ToastContainer, toast } from 'react-toastify';
+// import { showMessage } from './utiles/showMessage';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
@@ -11,9 +11,9 @@ const Register = () => {
     const [name , setName] = useState("")
     const [email , setEmail] = useState("")
     const [password , setPassword]= useState("")
-    // const [role, setRole]  = useState("")
-    const [Succes, setMessage] = useState(false)
-    const [isError, setIsError] = useState(false)
+    const [role, setRole]  = useState("")
+    // const [Succes, setMessage] = useState(false)
+    // const [isError, setIsError] = useState(false)
 
       const handleName = (e)=>{
         return setName(e.target.value)
@@ -24,10 +24,10 @@ const Register = () => {
       const handlePassword = (e)=>{
         return setPassword(e.target.value)
       }
-      // const handleRole = (e) => {
-      //   return setRole(e.target.value)
-      // }
-      const API_URL = 'http://localhost:3001/api/auth/register';
+      const handleRole = (e) => {
+        return setRole(e.target.value)
+      }
+      const API_URL = 'http://localhost:8000/api/auth/register';
 
       const registerHandler = async ()=>{
         const 
@@ -35,8 +35,7 @@ const Register = () => {
           name,
           email,
           password,
-         
-          // role
+          role
         }
         if (name === "") {
           toast.error(' name field is requred!',{
@@ -67,13 +66,17 @@ const Register = () => {
        try {
          const result = await axios.post(API_URL , user)
          console.log(result.data.message)
-         setMessage(result.data.message)
-         isError(false);
+         const msg = result.data.message;
+        toast.success(msg)
+        //  setMessage(result.data.message)
+        //  isError(false);
         //  )
        } catch (error) {
-         console.log(error.response.data.message)
-         setIsError(error.response.data.message)
-         isError(true)
+        //  console.log(error.result.data.message)
+        //  const msg = error.data.message;
+        //  toast.success(msg)
+        //  setIsError(error.response.data.message)
+        //  isError(true)
        }
       
 
@@ -88,7 +91,7 @@ const Register = () => {
         <h1 
         className='mt-2 text-center text-3xl font-bold tracking-tight '>Create your account
         </h1>
-        { Succes &&  showMessage( isError , Succes)}
+        {/* { Succes &&  showMessage( isError , Succes)} */}
         <div 
         className='mt-4 '>
         <div>
@@ -147,7 +150,7 @@ const Register = () => {
 
 
         {/* input select role */}
-        {/* <select 
+        <select 
         id="role" 
         name="role" 
         value={role}
@@ -163,7 +166,10 @@ const Register = () => {
         <option 
         value="livreur">Livreur
         </option>
-        </select> */}
+        <option 
+        value="manager">Manager
+        </option>
+        </select>
         {/* end seelct role  */}
                 
         <div 
@@ -184,7 +190,7 @@ const Register = () => {
         </button>
         </div>
         </div>
-        <ToastContainer />
+       
         </div>
     )
 }
